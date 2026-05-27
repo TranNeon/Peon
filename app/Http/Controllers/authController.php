@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use App\Models\UserRepo;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+class authController extends Controller
+{
+    public function loginView(){
+        return view("auth.login");
+    }
+
+    public function registerView(){
+        return view("auth.register");
+    }
+
+
+    public function registerFn(Request $request){
+        $validate = $request->validate(['email'=>'required', 'password'=>'required', 'name'=>'required']);
+        $user = UserRepo::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password)]);
+        return redirect("/");
+    }
+
+    /**
+     * Handle an authentication attempt.
+     */
+    public function loginFn(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('dashboard');
+        }
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+
+    }
+}
