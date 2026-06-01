@@ -1,5 +1,8 @@
-<h2> {{$draft->title}}</h2>
-<h6> {{$draft->created_at}}</h6>
-<p>
-    {{$draft->content}}
-</p>
+<x-layout>
+<a href="{{route('post-requests.create', ['draft_id' => $draft->id] )}}"> Make this post public</a>
+
+<x-blog :blog="$draft">
+
+</x-blog>
+</x-layout>
+

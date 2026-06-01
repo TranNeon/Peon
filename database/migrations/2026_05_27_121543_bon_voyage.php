@@ -22,6 +22,7 @@ return new class extends Migration
 
         Schema::create("posts", function (Blueprint $table) {
             $table->id();
+            $table->string('slug')->unique();
             $table->text("title");
             $table->longText("content");
             $table->timestamp("created_at");
@@ -36,13 +37,15 @@ return new class extends Migration
         Schema::create("post_requests", function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->enum("status", ["pending", "accepted",  "declined"]);
+                $table->enum("status", ["pending", "accepted",  "declined"])->default("pending");
+
+            $table->text("title");
+            $table->longText("content");
 
             $table
                 ->foreignId("draft_id")
                 ->references("id")
                 ->on("drafts");
-
             $table
                 ->foreignId("post_id")
                 ->nullable()
@@ -51,6 +54,9 @@ return new class extends Migration
 
 
         });
+
+
+
     }
 
     /**

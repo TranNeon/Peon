@@ -14,7 +14,7 @@ class DraftController extends Controller
      */
     public function index()
     {
-        return view('draft.index',['ownedDrafts' =>  Draft::all()->where('user_id', auth()->id())]);
+        return view('draft.index',['ownedDrafts' =>   auth()->user()->drafts()->get()]);
     }
 
     /**
@@ -32,7 +32,7 @@ class DraftController extends Controller
     {
 //        dd(["user_id" => auth()->user()->id, ...$requestController->all()]);
         Draft::create(["user_id" => auth()->user()->id, ...$request->all()]);
-        redirect(route('drafts.index'));
+        return redirect(route('drafts.index'));
     }
 
     /**

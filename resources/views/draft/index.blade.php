@@ -3,19 +3,20 @@
 
 
     @forelse($ownedDrafts as $draft)
-        <div>
-            <a href="{{route('drafts.show',[ $draft->id] )}}"> {{$draft->title}}</a>
+        <div style="padding: 10px">
+        <div style="border: 2px solid cadetblue; padding: 10px ">
+            <a style=" font-size: 18px; font-weight: bolder " href="{{route('drafts.show',[ $draft->id] )}}"> {{$draft->title}}</a>
 
-            <form method="POST" action="{{route("drafts.destroy", [ $draft ])}}">
+            <form style="display:inline;" method="POST" action="{{route("drafts.destroy", [ $draft ])}}">
                 @csrf
                 @method('DELETE')
-                <button type="submit"> Delete  </button>
+                <br> <button type="submit"> Delete  </button>
             </form>
-            <form method="GET" action="{{route("drafts.edit", [ $draft ])}}">
-                @csrf
-                <button type="submit"> Edit  </button>
-            </form>
+            <a style="border: 1px solid black ; color: black; background: beige  ; text-decoration: none ; padding: 2px" method="GET" href="{{route("drafts.edit", [ $draft ])}}">
+                    Edit this
+            </a>
 
+        </div>
         </div>
     @empty
         <h1> <u> <strong> Go work on something bro  </strong></u></h1>

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\UserRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use \App\UserRole;
 
 class authController extends Controller
 {
@@ -22,7 +22,20 @@ class authController extends Controller
 
     public function registerFn(Request $request){
         $validate = $request->validate(['email'=>'required', 'password'=>'required', 'name'=>'required']);
-        $user = UserRepo::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password)]);
+        $explosion = explode( '@', $request->email);
+        $domain = end ( $explosion );
+
+        $role = match (true) {
+            $domain === "reviewer.post3.com" => UserRole::REVIEWER,
+            $domain === 'admin.post3.com' => UserRole::ADMIN,
+            default => UserRole::USER,
+        };
+
+
+
+        $user = User::create(['name' => $request->name,
+            'role' => $role ,
+            'email' => $request->email, 'password' => Hash::make($request->password)]);
         return redirect("/");
     }
 
@@ -39,7 +52,7 @@ class authController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+            return redirect('/');
         }
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -29,4 +30,27 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $table = "users";
+    protected $fillable = ['name', 'email', 'password', 'role'];
+    protected $casts = [
+        'role' => UserRole::class,
+    ];
+
+    public function drafts()
+    {
+        return $this->hasMany(Draft::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+    public function postRequests()
+    {
+        return $this->hasManyThrough(PostRequest::class, Draft::class);
+    }
+
+
+
 }
