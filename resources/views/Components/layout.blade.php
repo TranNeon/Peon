@@ -9,24 +9,15 @@
         font-size: 22px;
         color: brown;
         font-weight: bolder;
-
     }
-
-
 </style>
 </head>
 <body>
 <nav style="display:flex;  " >
-
-
-
-
-
-
     <a href="{{route('drafts.index')}}"> Drafts  </a>
 <a href="{{route('post-requests.index')}}"> My Post Requests  </a>
     @auth
-        <a href="{{route('logoutFn')}}"> logout </a>
+        <a href="{{route('logoutFn')}}" onclick="return confirm('123')"> logout </a>
     @endauth
     @guest
         <a href="{{route('register')}}"> sign up </a>
@@ -48,6 +39,11 @@
         </ul>
     </div>
 @endif
+
+@error('email')
+<span class="text-danger">{{ $message }}</span>
+@enderror
+
 
 {{ $slot }}
 </body>

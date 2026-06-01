@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserRepo;
 use App\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -57,8 +58,18 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if(auth()->user()->role === UserRole::ADMIN) {
-            $user->update($request->all());
+       $request->validate(['name'=>'required', 'email'=>'required']);
+       if(auth()->user() && auth()->user()->role === UserRole::ADMIN) {
+           $user->role = $request->role;
+            $user->save();
+        }
+        if ( (auth()->user()->role === UserRole::ADMIN || auth()->user()->is($user))) {
+            $user->name = $request->name;
+            $user->email = $request->email;
+            if($request->password) {
+                $user->password = Hash::make($request->password);
+            }
+            $user->save();
         }
         return back();
     }

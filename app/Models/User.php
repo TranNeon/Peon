@@ -50,11 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(PostRequest::class, Draft::class);
     }
-public function  canAccessPanel()
-{
-    return $this->role === UserRole::ADMIN;
-}
-
-
+    public function  canAccessPanel()
+    {
+        return $this->role === UserRole::ADMIN;
+    }
 
 }

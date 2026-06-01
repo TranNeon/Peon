@@ -3,17 +3,30 @@
     <div> Contact email : {{ $user->email }}</div>
     <div> User Role: {{$user->role}}</div>
     @auth
-        @if(auth()->user()->role === \App\UserRole::ADMIN )
-            <label> Change role : </label>
+        @if(auth()->user()->role === \App\UserRole::ADMIN || auth()->user()->is($user) )
             <form method="POST" action="{{route('users.update', $user)}}" >
                 @method('PATCH')
                 @csrf
+                <label >Name</label>
+
+                <input name="name" type="text" value="{{ old('name', $user->name)  }}" />
+                <label >Email</label>
+                <input name="email" type="email"  value="{{old('email', $user->email)}}" />
+                <label >Password</label>
+                <input name="password" type="password"  value="" />
+                @if(auth()->user()->role === \App\UserRole::ADMIN )
+                    <label> Change role : </label>
                 <select name="role"  >
-                    <option value="{{\App\UserRole::ADMIN}}"> Administrator </option>
-                    <option value="{{\App\UserRole::REVIEWER}}"> Reviewer </option>
-                    <option value="{{\App\UserRole::USER}}"> User </option>
+                    @foreach(\App\UserRole::cases() as $case)
+                        @if($case === $user->role)
+                            <option  selected value="{{$case}}"> {{$case}}</option>
+                        @else
+                            <option  value="{{$case}}"> {{$case}}</option>
+                        @endif
+                    @endforeach
                 </select>
-                <button> Set </button>
+                @endif()
+                <button type="submit"> Update Information </button>
             </form>
         @endif
     @endauth
