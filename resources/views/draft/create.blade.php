@@ -6,4 +6,5 @@
     <textarea name="content"> </textarea> <br>
     <button type="submit"> New Draft </button>
 </form>
+
 </x-layout>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UserRepo;
+use App\UserRole;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -36,9 +38,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UserRepo $userRepo)
+    public function show(User $user)
     {
-        //
+        return view('user.show',['user'=>$user]);
     }
 
     /**
@@ -53,15 +55,18 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, UserRepo $userRepo)
+    public function update(Request $request, User $user)
     {
-        //
+        if(auth()->user()->role === UserRole::ADMIN) {
+            $user->update($request->all());
+        }
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserRepo $userRepo)
+    public function destroy(User $user)
     {
         //
     }

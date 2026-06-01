@@ -11,7 +11,7 @@
             <td> {{$request->id}} </td>
             <td> {{$request->title}} </td>
             <td> <x-tags :tags="$request->tags"></x-tags> </td>
-            <td> {{$request->draft->user->name}} </td>
+            <td><a href="{{route('users.show'   , $request->draft->user)}}"> {{$request->draft->user->name}} </a></td>
             <td> {{$request->created_at}} </td>
             @if($request->status === \App\PostRequestStatus::Pending )
                 <td style="background: orange "> Pending </td>

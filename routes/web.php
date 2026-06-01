@@ -5,10 +5,12 @@ use App\Models\PostRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-
+Route::get("/debug-user", function () {
+   return view("debug");
+});
 
 Route::get("/", function () {
-    return view("welcome");
+    return redirect("/posts");
 });
 
 Route::get("/tag/{tag_name}", [PostController::class, "show_by_tag"])->name("posts.show_by_tag");
@@ -31,16 +33,15 @@ Route::get("/new-reply", function () {
     return redirect("/replies");
 });
 
+
+
 Route::get("/register", [\App\Http\Controllers\authController::class, "registerView"])->name("register");
 Route::get("/login", [\App\Http\Controllers\authController::class, "loginView"])->name("login");
+Route::resource("users", \App\Http\Controllers\UserController::class);
 Route::post("/users", [\App\Http\Controllers\authController::class, "registerFn"])->name("register-fn");
 Route::get("/sessions", [\App\Http\Controllers\authController::class, "loginFn"])->name("login-fn");
-Route::get("/authenticated", function () {
-    dd(auth()->user()->role);
-});
 
 
-//TODO: the controller handle
 
 Route::middleware('auth')->group(function () {
     Route::get("/logout", function () {
@@ -61,7 +62,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', \App\Http\Middleware\geReviewerPrivilege::class])->group(function () {
-    Route::get("/admin", function () {
+    Route::get("/debug-admin", function () {
     dd('very important secret');
     });
 

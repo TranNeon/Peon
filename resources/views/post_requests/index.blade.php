@@ -6,11 +6,13 @@
         }
     </style>
     <table>
-        <tr><th>id</th><th>title</th><th>user</th>  <th> created at </th> <th> status  </th> </tr>
+        <tr><th>id</th><th>title</th> <th>tags</th> <th>user</th>  <th> created at </th> <th> status  </th> </tr>
+
         @forelse($ownedRequest as $request)
             <tr>
                 <td> {{$request->id}} </td>
                 <td> {{$request->title}} </td>
+                <td> <x-tags :tags="$request->tags"></x-tags> </td>
                 <td> {{$request->draft->user->name}} </td>
                 <td> {{$request->created_at}} </td>
                 @if($request->status === \App\PostRequestStatus::Pending )
@@ -27,6 +29,9 @@
 
             </tr>
         @empty
+            <div> nothing here yet </div>
         @endforelse
     </table>
 </x-layout>
+
+

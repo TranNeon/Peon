@@ -30,7 +30,7 @@ class DraftController extends Controller
      */
     public function store(Request $request)
     {
-//        dd(["user_id" => auth()->user()->id, ...$requestController->all()]);
+        $request->validate(['title'=>'required', 'content'=>'required']);
         Draft::create(["user_id" => auth()->user()->id, ...$request->all()]);
         return redirect(route('drafts.index'));
     }
@@ -58,6 +58,7 @@ class DraftController extends Controller
      */
     public function update(Request $request, Draft $draft)
     {
+        $request->validate(['title'=>'required', 'content'=>'required']);
         $draft->update($request->all());
         return redirect(route('drafts.index'));
     }

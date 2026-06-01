@@ -10,7 +10,7 @@
                 <a style=" font-size: 18px; font-weight: bolder "
                    href="{{route('posts.show_by_slug',[ 'slug' => $post->slug] )}}"> {{$post->title}}</a>
                 <p>
-                    {{$post->content}}
+                    {{substr($post->content,  0 , 100)}}...
                 </p>
             </div>
         </div>
