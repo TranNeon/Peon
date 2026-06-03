@@ -31,11 +31,14 @@ class authController extends Controller
             default => UserRole::USER,
         };
 
-
-
+        //spatie role
         $user = User::create(['name' => $request->name,
-            'role' => $role ,
             'email' => $request->email, 'password' => Hash::make($request->password)]);
+            $spatieRole = match (true) {
+            $domain === "reviewer.post3.com" => $user->assignRole('reviewer') ,
+            $domain === 'admin.post3.com' => $user->assignRole('admin'),
+            default => $user->assignRole('user'),
+        };
         return redirect("/");
     }
 

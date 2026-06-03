@@ -1,9 +1,9 @@
 <x-layout>
     <div> Name :{{$user->name}} </div>
     <div> Contact email : {{ $user->email }}</div>
-    <div> User Role: {{$user->role}}</div>
+    <div> User Owned Roles: {{$user->getRoleNames()}}</div>
     @auth
-        @if(auth()->user()->role === \App\UserRole::ADMIN || auth()->user()->is($user) )
+        @if(auth()->user()->hasRole ( \App\UserRole::ADMIN) || auth()->user()->is($user) )
             <form method="POST" action="{{route('users.update', $user)}}" >
                 @method('PATCH')
                 @csrf
@@ -14,11 +14,11 @@
                 <input name="email" type="email"  value="{{old('email', $user->email)}}" />
                 <label >Password</label>
                 <input name="password" type="password"  value="" />
-                @if(auth()->user()->role === \App\UserRole::ADMIN )
+                @if(auth()->user()->hasRole(\App\UserRole::ADMIN) )
                     <label> Change role : </label>
-                <select name="role"  >
+                <select name="roles[]" multiple >
                     @foreach(\App\UserRole::cases() as $case)
-                        @if($case === $user->role)
+                        @if($user->hasRole($case))
                             <option  selected value="{{$case}}"> {{$case}}</option>
                         @else
                             <option  value="{{$case}}"> {{$case}}</option>

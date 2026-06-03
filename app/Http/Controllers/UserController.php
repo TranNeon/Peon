@@ -59,11 +59,13 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
        $request->validate(['name'=>'required', 'email'=>'required']);
-       if(auth()->user() && auth()->user()->role === UserRole::ADMIN) {
-           $user->role = $request->role;
-            $user->save();
+       if( $request->roles && auth()->user() && auth()->user()->hasRole ( UserRole::ADMIN)) {
+            $user->syncRoles( $request->roles );
+           $user->save();
         }
-        if ( (auth()->user()->role === UserRole::ADMIN || auth()->user()->is($user))) {
+
+
+        if ( (auth()->user()->hasRole(UserRole::ADMIN)  || auth()->user()->is($user))) {
             $user->name = $request->name;
             $user->email = $request->email;
             if($request->password) {

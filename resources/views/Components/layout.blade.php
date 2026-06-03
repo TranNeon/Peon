@@ -23,7 +23,7 @@
         <a href="{{route('register')}}"> sign up </a>
         <a href="{{route('login')}}"> log in  </a>
     @endguest
-        @can('review', \App\Models\PostRequest::class)
+        @can('review post_request')
             <a href="{{route('reviewer-dashboard')}}"> Manage Post Request </a>
         @endcan
     <a href="{{route('posts.index')}}">  Public Post </a>

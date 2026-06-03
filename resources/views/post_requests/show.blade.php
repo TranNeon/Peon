@@ -1,8 +1,7 @@
 <x-layout>
 
 
-@can('review', \App\Models\PostRequest::class)
-
+@can('review post_request')
     <form id="approve" method="POST" action="{{route('reviewer-dashboard.approve', $postRequest)}}" >
         <button type="submit"  form="approve"> approve </button>
         @csrf
@@ -14,9 +13,6 @@
         @csrf
         @method('PATCH')
     </form>
-
-
-
 @endcan
 
 

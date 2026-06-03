@@ -10,13 +10,15 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
+
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * Get the attributes that should be cast.
@@ -32,7 +34,7 @@ class User extends Authenticatable
     }
 
     protected $table = "users";
-    protected $fillable = ['name', 'email', 'password', 'role'];
+    protected $fillable = ['name', 'email', 'password'];
     protected $casts = [
         'role' => UserRole::class,
     ];
@@ -52,7 +54,7 @@ class User extends Authenticatable
     }
     public function  canAccessPanel()
     {
-        return $this->role === UserRole::ADMIN;
+        return $this->hasRole('admin');
     }
 
 }

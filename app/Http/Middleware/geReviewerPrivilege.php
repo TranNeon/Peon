@@ -20,7 +20,7 @@ class geReviewerPrivilege
         if (!auth()->check()) {
             return redirect()->route('login');
         }
-        if (auth()->user()->role === UserRole::USER) {
+        if (auth()->user()->hasRole('user')) {
             return response('', Response::HTTP_FORBIDDEN);
         }
         return $next($request);
