@@ -24,6 +24,7 @@ Route::resource("comments", \App\Http\Controllers\CommentController::class);
 
 Route::get("/new-reply", function () {
     // dd(requestController()->all());
+
     DB::table("replies")->insert([
         "content" => request(
             "content",

@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    @vite('resources/css/app.css')
 <style>
 
     nav a {

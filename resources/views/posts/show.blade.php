@@ -43,7 +43,8 @@
                 <input name="email" type="email"> <br>
                 <input name="content" type="text">
                 <input hidden name="post_id" value='{{$post->id}}'>
-                <button type="submit"> Send </button>
+{{--                <button type="submit"> Send </button>--}}
+                <x-filament::button type="submit"> Send </x-filament::button>
             </fieldset>
         </form>
     @endguest
