@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Jobs\EmailSendJob;
 use App\Models\PostRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +63,11 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource("/post-requests", \App\Http\Controllers\PostRequestController::class );
+
+    Route::get("/debug-email", function () {
+        EmailSendJob::dispatch(auth()->user());
+        return " done";
+    });
 
 });
 

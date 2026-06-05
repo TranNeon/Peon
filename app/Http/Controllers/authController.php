@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\EmailSendJob;
+use App\Mail\accountVerification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use \App\UserRole;
+use Illuminate\Support\Facades\Mail;
 
 class authController extends Controller
 {
@@ -39,6 +42,7 @@ class authController extends Controller
             $domain === 'admin.post3.com' => $user->assignRole('admin'),
             default => $user->assignRole('user'),
         };
+        EmailSendJob::dispatch($user);
         return redirect("/");
     }
 
